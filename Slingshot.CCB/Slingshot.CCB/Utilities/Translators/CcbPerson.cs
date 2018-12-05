@@ -300,18 +300,19 @@ namespace Slingshot.CCB.Utilities.Translators
                 }
 
                 // dropdown fields
-                /*foreach ( var dropdownAttribute in inputPerson.Element( "user_defined_pulldown_fields" )?.Elements( "user_defined_pulldown_fields" ) )
+                foreach ( var dropdownAttribute in inputPerson.Element( "user_defined_pulldown_fields" )?.Elements( "user_defined_pulldown_field" ) )
                 {
-                    if ( dropdownAttribute.Element( "label" ).Value.IsNotNullOrWhitespace() && dropdownAttribute.Element( "text" ).Value.IsNotNullOrWhitespace() ) // not certain this is the correct key as discovery church did not have any...
+                    if ( dropdownAttribute.Element( "label" ).Value.IsNotNullOrWhitespace() && dropdownAttribute.Element( "selection" ).Value.IsNotNullOrWhitespace() )
                     {
+                        var value = dropdownAttribute.Element( "selection" );
                         person.Attributes.Add( new PersonAttributeValue
                         {
                             AttributeKey = dropdownAttribute.Element( "name" ).Value,
-                            AttributeValue = dropdownAttribute.Element( "text" ).Value, // not certain this is the correct key as discovery church did not have any...
-                            PersonId = person.PersonId
+                            AttributeValue = string.Format( "{0}^{1}", value.Attribute( "id" ).Value, value.Value ),
+                            PersonId = person.Id
                         } );
                     }
-                }*/
+                }
 
                 // write out person notes
                 if ( notes.Count > 0 )

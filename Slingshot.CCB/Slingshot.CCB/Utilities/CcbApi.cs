@@ -668,7 +668,8 @@ namespace Slingshot.CCB.Utilities
                 if ( field.Element( "label" ).Value.IsNotNullOrWhitespace() )
                 {
                     var personAttribute = new PersonAttribute();
-                    personAttribute.Key = field.Element( "name" ).Value.Replace( "_ind_", "_" ); // need to strip out the '_ind' so they match what is returned from CCB on the person record
+                    // need to strip out the '_ind' so they match what is returned from CCB on the person record
+                    personAttribute.Key = field.Element( "name" ).Value.Replace( "_ind_", "_" ); 
                     personAttribute.Name = field.Element( "label" ).Value;
 
                     if ( field.Element( "name" ).Value.Contains( "_text_" ) )
@@ -678,6 +679,10 @@ namespace Slingshot.CCB.Utilities
                     else if ( field.Element( "name" ).Value.Contains( "_date_" ) )
                     {
                         personAttribute.FieldType = "Rock.Field.Types.DateFieldType";
+                    }
+                    else if ( field.Element( "name" ).Value.Contains( "_pulldown_" ) )
+                    {
+                        personAttribute.FieldType = "Rock.Field.Types.SelectSingleFieldType";
                     }
 
                     if ( personAttribute.FieldType.IsNotNullOrWhitespace() )
