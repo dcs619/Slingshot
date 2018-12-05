@@ -892,6 +892,16 @@ namespace Slingshot.CCB.Utilities
                                     ImportPackage.WriteToPackage( attendance );
                                 }
                             }
+
+                            // track headcounts as metrics
+                            if ( sourceEvent.Element( "head_count" ) != null && sourceEvent.Element( "head_count" ).Value.AsInteger() > 0 )
+                            {
+                                var metric = CcbMetric.Translate( sourceEvent, eventDetails );
+                                if ( metric != null )
+                                {
+                                    ImportPackage.WriteToPackage( metric );
+                                }
+                            }
                         }
                     }
                 }
@@ -956,6 +966,13 @@ namespace Slingshot.CCB.Utilities
                                 eventDetail.LocationCity = eventItem.Element( "location" ).Element( "city" ).Value;
                                 eventDetail.LocationState = eventItem.Element( "location" ).Element( "state" ).Value;
                                 eventDetail.LocationZip = eventItem.Element( "location" ).Element( "zip" ).Value;
+                            }
+
+                            // grouped events usually have headcounts on the event detail
+                            if ( eventItem.Element( "event_grouping" ) != null && eventItem.Element( "event_grouping" ).Value.IsNotNullOrWhitespace() )
+                            {
+                                eventDetail.CategoryId = eventItem.Element( "event_grouping" ).Attribute( "id" ).Value.AsInteger();
+                                eventDetail.CategoryName = eventItem.Element( "event_grouping").Value;
                             }
                         }
 
@@ -1101,5 +1118,9 @@ namespace Slingshot.CCB.Utilities
         /// The location zip.
         /// </value>
         public string LocationZip { get; set; }
+
+        public int CategoryId { get; set; }
+        
+        public string CategoryName {  get; set; }
     }
 }
